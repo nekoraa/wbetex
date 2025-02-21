@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>欢迎！！！</title>
+    <!-- MDUI CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+    <style>
+        /* 这里可以添加你的 CSS 样式 */
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script>
+        function redirectToAppropriatePage() {
+            const isMobile = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+            const pcUrl = "登录/"; // 替换为你的 PC 页面 URL
+            const mobileUrl = "登录pe/"; // 替换为你的移动端页面 URL
+
+            if (isMobile) {
+                window.location.href = mobileUrl;
+            } else {
+                window.location.href = pcUrl;
+            }
+        }
+
+        // 在页面加载时立即执行重定向函数
+        redirectToAppropriatePage();
+    </script>
+</body>
+</html>

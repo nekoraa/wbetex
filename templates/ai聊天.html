@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LINGO AIchatbot</title>
+    <!-- MDUI CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+
+
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+
+
+
+    <style>
+        pre {
+            border: 1px solid #ccc; /* 设置边框颜色和宽度 */
+            /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); !* 添加阴影效果 *!*/
+            border-radius: 2px; /* 设置圆角 */
+            background-color: #343434; /* 设置背景颜色为黑灰色 */
+            color: #f8f8f2; /* 设置字体颜色，这里使用的是浅色以便于在深色背景上阅读 */
+            padding: 5px; /* 添加内边距 */
+            margin: 20px; /* 添加外边距 */
+            overflow: auto; /* 如果代码行过长，会自动显示滚动条 */
+            font-size: 14px;
+            max-width: 70%;
+        }
+
+    </style>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+
+
+    <style>
+
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        .typewriter {
+            font-family: monospace;
+            overflow: hidden; /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid orange; /* The typewriter cursor */
+            white-space: nowrap; /* Keeps the content on a single line */
+            margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em; /* Adjust as needed */
+            animation: typing 3.5s steps(40, end),
+            blink-caret .75s step-end infinite;
+        }
+
+
+        #expandableTextarea {
+            border: none;
+            width: 100%;
+            height: 30px;
+            max-height: 100%;
+            resize: none;
+            overflow-y: auto;
+            word-wrap: break-word;
+            transition: height 0.5s; /* 添加过渡效果 */
+            outline: none;
+            line-height: 30px;
+
+            /* 隐藏浏览器默认滚动条 */
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent;
+
+            /* 自定义滚动条样式 */
+            position: relative;
+
+            &::-webkit-scrollbar {
+                width: 12px; /* 设置滚动条宽度 */
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #888;
+                border-radius: 2px; /* 添加圆角 */
+            }
+        }
+
+        .scrollable-div {
+            border: none; /* 取消边框 */
+            padding: 10px;
+        }
+
+        .scrollable-div::-webkit-scrollbar {
+            width: 2px; /* 设置滚动条宽度 */
+        }
+
+        .scrollable-div::-webkit-scrollbar-thumb {
+            background-color: #888; /* 设置滚动条thumb颜色 */
+            border-radius: 2px; /* 设置thumb的圆角 */
+        }
+
+        .scrollable-div::-webkit-scrollbar-track {
+            background-color: #eee; /* 设置滚动条track颜色 */
+        }
+
+        #expandButton {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        #expandButton2 {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+
+    <style>
+        /* 样式用于垂直居中元素 */
+        .vertical-center {
+            display: flex;
+            align-items: center;
+        }
+
+        /* 样式用于使头像图片为圆形 */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; /* 50%的圆角使其变成圆形 */
+        }
+
+        .image-container {
+            /* 设置容器的高度为300px */
+            overflow: hidden; /* 隐藏容器外部的内容 */
+
+            width: 100%;
+        }
+
+        .image-container img {
+            width: 100%; /* 图片宽度填充容器 */
+            height: 100%; /* 图片高度填充容器 */
+            object-fit: cover; /* 保持纵横比并裁剪以填充容器 */
+
+
+        }
+    </style>
+    <style>
+  .round-button {
+    width: 35px; /* 设置按钮的宽度 */
+    height: 35px; /* 设置按钮的高度，使其成为一个正圆 */
+    background-image: url('{{用户.头像.url}}');
+    background-size: cover;
+    border-radius: 50%; /* 将按钮的边角半径设置为50%，使其成为一个圆形 */
+    border: none; /* 去除按钮边框 */
+    cursor: pointer; /* 鼠标移上去时显示手型光标 */
+  }
+</style>
+
+</head>
+<body class="mdui-theme-primary-blue mdui-drawer-body-left" style="background-color: #f0f0f0 ">
+
+
+
+<div class="mdui-toolbar mdui-color-grey-300 mdui-shadow-0"
+     style="height: 40px;position:fixed;width: 100%;right: 0;left: 0;z-index: 9999;">
+    <button class="mdui-btn" mdui-drawer="{target: '#left-drawer'}" mdui-tooltip="{content: '选择模型'}"><i class="mdui-icon material-icons">chat</i>选择模型
+    </button>
+    <!--            <div class="mdui-list-item-avatar" >-->
+    <!--              <img src="avatar1.jpg"/>-->
+    <!--            </div>-->
+
+</div>
+
+<div class="vertical-center " style="z-index: 10000;position:fixed;right: 5px;top: 2px">
+
+    <form method="post" action="../转跳/" autocomplete="off" style="overflow: auto;">
+        <input type="hidden" name="个人中心" value="{{AI模型.aiid}}"/>
+        <button class="round-button user-avatar" style=""></button>
+    </form>
+</div>
+
+
+<div class="mdui-drawer  mdui-color-grey-300 mdui-shadow-0 " id="left-drawer">
+
+    <div style="margin-top: 50px ;margin-left: 10px;margin-right: 10px">
+        <ul class="mdui-list">
+
+            {% for AI模型 in AI模型 %}
+            <li class="mdui-list-item mdui-ripple mdui-list-item-active" data-aiid="{{AI模型.aiid}}" data-ainame="{{AI模型.AI名字}}">
+
+
+
+
+                <div class="mdui-list-item-avatar">
+                    <img src="/static/20190615121719_eftwu.jpg"/>
+                </div>
+                <div class="mdui-list-item-content" style="max-width: 40%">{{AI模型.AI名字}}</div>
+
+
+                <form method="post" action="../聊天记录/" autocomplete="off" >
+                    <input type="hidden" name="下载" value="{{AI模型.aiid}}" />
+                    <button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" mdui-tooltip="{content: '查看聊天记录'}">
+                        <i class="mdui-icon material-icons">play_for_work</i>
+                    </button>
+                </form>
+
+                <form method="post" action="../删除/" autocomplete="off" >
+                    <input type="hidden" name="删除" value="{{AI模型.aiid}}" />
+                    <button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" mdui-tooltip="{content: '删除模型'}">
+                        <i class="mdui-icon material-icons">delete_forever</i>
+                    </button>
+                </form>
+
+
+
+            </li>
+            {% endfor %}
+
+
+            <li class="mdui-list-item mdui-ripple" mdui-dialog="{target: '#exampleDialog'}" mdui-tooltip="{content: '创建新模型'}">
+
+                <i class="mdui-icon material-icons">add_circle</i>
+                <div class="mdui-list-item-content" style="font-size: 15px">创建新模型</div>
+
+            </li>
+        </ul>
+
+
+    </div>
+</div>
+
+
+<div class="mdui-dialog" id="exampleDialog" style="z-index: 10000;overflow: auto;">
+    <div class="mdui-dialog-title" style="font-size: 18px"><i class="mdui-icon material-icons">dashboard</i>&nbsp;创建新的AI模型
+    </div>
+
+    <div class="mdui-dialog-content" >
+    <form method="post" action="../创建机器人/" autocomplete="off" style="overflow: auto;">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+
+            <label class="mdui-textfield-label">bot name</label>
+            <input name="AI名字" class="mdui-textfield-input" type="text" maxlength="5"/>
+            <div class="mdui-textfield-helper">输入AI名字，最多5个字</div>
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label" style="overflow: auto;">
+            <label class="mdui-textfield-label">要求文本</label>
+            <textarea name="要求文本" class="mdui-textfield-input" maxlength="2000"></textarea>
+            <div class="mdui-textfield-helper">输入提示词，最多1000个字（催眠咒语）</div>
+        </div>
+
+        <P>温度</P>
+
+        <label class="mdui-slider mdui-slider-discrete">
+            <input name="温度" type="range" step="0.1" min="0" max="1"/>
+        </label>
+
+        <P>最大输出字数</P>
+        <label class="mdui-slider mdui-slider-discrete">
+            <input name="最大输出字数" type="range" step="1" min="100" max="2048"/>
+        </label>
+
+        <P>检索记忆长度(1000为好，不建议开大)</P>
+        <label class="mdui-slider mdui-slider-discrete">
+            <input name="检索记忆长度" type="range" step="1" min="100" max="20000"/>
+        </label>
+
+        <div class="mdui-divider"></div>
+        <P><br>下面是关于长期记忆的选项，需要自己微调，<br>如果了解RAG的话就好，不了解就按推荐的来，不建议乱动<br><br></P>
+        <div class="mdui-divider"></div>
+
+        <P>相似度阈值(设为1关闭长期记忆，0的话记忆好点但是容易出问题，建议0.5)</P>
+        <label class="mdui-slider mdui-slider-discrete">
+            <input name="相似度阈值" type="range" step="0.1" min="0" max="1"/>
+        </label>
+
+
+        <P>相似度最高的键的数量(0=关闭长期记忆，建议5)</P>
+        <label class="mdui-slider mdui-slider-discrete">
+            <input name="相似度最高的键的数量" type="range" step="1" min="0" max="10"/>
+        </label>
+
+
+
+        <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
+    </form>
+    </div>
+
+    <div class="mdui-dialog-actions">
+        <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>取消</button>
+    </div>
+
+</div>
+
+
+<div class="mdui-container-fluid scrollable-div" id="sourceDiv"
+     style="border: 0px solid black;overflow: auto;height: 90%;">
+    <div class="mdui-row" style="margin-bottom: 10px ;margin-top: 40px">
+        <div class="mdui-col-xs-12 mdui-col-offset-xs-0 zws666" id="zws666" style="border: 0px solid black;">
+
+
+        </div>
+
+
+    </div>
+</div>
+
+<div class="mdui-container-fluid " id="targetDiv"
+     style="z-index: 99;border: 0px solid black;position:fixed;bottom: 0;right: 0">
+    <div class="mdui-row">
+        <div class="mdui-col-xs-12 mdui-col-offset-xs-0 mdui-color-grey-300" style="border: 0px solid black; bottom: 0">
+            <div class="mdui-col-xs-1" style="border: 0px solid black; height: 100%; margin-top: 10px;">
+                <button id="expandButton" onclick="toggleTextarea()"
+                        style="border-radius: 2px; margin-left: 20px; position: absolute; right: 0 ">
+                    <i id="icon" class="mdui-icon material-icons">unfold_more</i>
+                </button>
+            </div>
+            <div class="mdui-col-xs-9" style="border: 0px solid black; height: 100%">
+                <textarea id="expandableTextarea" placeholder=""
+                          style="border-radius: 2px; margin-top: 10px; margin-left: 20px"></textarea>
+            </div>
+            <div class="mdui-col-xs-1" style="border: 0px solid black; height: 100%; margin-top: 10px;">
+                <button id="expandButton2" style="border-radius: 2px; margin-left: 20px" onclick="submitChat()">
+                    <i id="submitButtonIcon" class="mdui-icon material-icons">keyboard_return</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    var isExpanded = false;
+
+    function toggleTextarea() {
+        var textarea = document.getElementById('expandableTextarea');
+        var buttonIcon = document.getElementById('icon');
+        isExpanded = !isExpanded;
+
+        if (isExpanded) {
+            textarea.style.height = '500px'; // 展开至整个HTML高度
+            buttonIcon.innerHTML = ' &#xe5d6'; // 切换为展开图标
+        } else {
+            textarea.style.height = '30px'; // 回到原始高度
+            buttonIcon.innerHTML = 'unfold_more'; // 切换为收起图标
+        }
+    }
+
+    var selectedAIID = null;
+    var selectedAIName = null;
+
+    $(document).ready(function () {
+        // 获取所有的列表项
+                selectedAIID = $(this).data('aiid');
+        var listItems = $('.mdui-list-item');
+
+
+        // 检查列表是否为空
+        if (listItems.length === 0) {
+            // 如果列表为空，则将selectedAIID设置为空值
+            selectedAIID = null; // 或者 selectedAIID = '';
+            return; // 退出函数
+        }
+
+
+
+        // 移除所有列表项的active类
+        listItems.removeClass('mdui-list-item-active');
+
+        // 默认选中第一个列表项并添加active类
+        var firstItem = listItems.first();
+        firstItem.addClass('mdui-list-item-active');
+
+        // 存储第一个AI模型的AIID
+        selectedAIID = firstItem.data('aiid');
+        selectedAIName = firstItem.data('ainame');
+
+        // 为列表项添加点击事件监听器
+        listItems.click(function () {
+            // 移除其他项的active类
+            listItems.removeClass('mdui-list-item-active');
+
+            // 为点击的项添加active类
+            $(this).addClass('mdui-list-item-active');
+
+            // 更新全局变量中的AIID
+            selectedAIID = $(this).data('aiid');
+
+            selectedAIName = $(this).data('ainame');
+
+        });
+    });
+
+</script>
+
+<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+<script>
+    // 获取源 div 和目标 div
+    var sourceDiv = document.getElementById('sourceDiv');
+    var targetDiv = document.getElementById('targetDiv');
+
+    // 初始化时设置目标 div 的宽度
+    setTargetWidth();
+
+    // 使用 ResizeObserver 监听源 div 的宽度变化
+    var resizeObserver = new ResizeObserver(setTargetWidth);
+    resizeObserver.observe(sourceDiv);
+
+    function setTargetWidth() {
+        // 获取源 div 的宽度
+        var sourceDivWidth = sourceDiv.offsetWidth;
+
+        // 将源 div 的宽度应用到目标 div
+        targetDiv.style.width = sourceDivWidth + 'px';
+    }
+
+
+    async function submitChat() {
+        // 获取文本框的内容
+        var textContent = document.getElementById('expandableTextarea').value;
+
+        // 检查文本框是否为空
+        if (textContent.trim() === '') {
+            // 如果为空，显示一个消息并退出函数
+            alert('请输入内容！');
+            return; // 退出函数
+        }
+
+        // 获取提交按钮并禁用它
+        var submitButton = document.getElementById('expandButton2');
+        submitButton.disabled = true;
+
+// 获取当前日期和时间
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = now.getMonth() + 1; // 月份是从0开始的，所以要加1
+        let day = now.getDate();
+        let hour = now.getHours();
+        let minute = now.getMinutes();
+
+// 将日期和时间格式化为年-月-日 时:分的格式
+        let dateTimeStr = year + '-' + month.toString().padStart(2, '0') + '-' + day.toString().padStart(2, '0') + ' ' + hour.toString().padStart(2, '0') + ':' + minute.toString().padStart(2, '0');
+
+
+        // 创建新的div元素来显示用户的文本
+        var userDiv = document.createElement('div');
+        userDiv.className = 'mdui-card-actions';
+        userDiv.style.cssText = "  margin: 20px; /* 添加外边距 */ border-radius: 5px; /* 设置圆角 */ box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);"
+        // 创建p元素并设置其样式和文本内容
+        var p = document.createElement('p');
+        p.style.cssText = "margin-left: 20px;text-align: left;word-wrap: break-word; overflow-wrap: break-word;";
+        p.innerText = textContent;
+
+
+        // 设置div的innerHTML
+        userDiv.innerHTML = `
+            <img class="mdui-card-header-avatar no-stretch" src="{{ 用户.头像.url }}"/>
+            <div class="mdui-card-header-title">{{用户.用户名}}</div>
+            <div class="mdui-card-header-subtitle">${dateTimeStr}</div>
+        `;
+
+
+        // 将p元素添加到div中
+        userDiv.appendChild(p);
+        // 创建一个分隔线
+        var divider = document.createElement('div');
+        divider.className = 'mdui-divider-dark';
+
+        // 获取您指定的div元素
+        var targetDiv = document.querySelector('.zws666');
+
+        // 将新的div和分隔线添加到指定的div中
+
+        // targetDiv.appendChild(divider);
+        targetDiv.appendChild(userDiv);
+
+        // 清空文本框
+        document.getElementById('expandableTextarea').value = '';
+        // 平滑滚动到最新的用户对话内容的底部
+        // sourceDiv.scrollTop = sourceDiv.scrollHeight;
+        sourceDiv.lastElementChild.scrollIntoView({behavior: 'smooth', block: 'end'});
+        setTimeout(function () {
+            sourceDiv.scrollTop = sourceDiv.scrollHeight;
+        }, 100);
+
+
+        var formData = new FormData();
+        formData.append('text', textContent);
+        formData.append('AIID', selectedAIID);
+        try {
+            // 发送POST请求到Django后端并等待响应
+            let response = await fetch('../处理/', { // 确保URL以斜杠("/")结尾
+                method: 'POST',
+                body: formData
+            });
+
+            // 获取响应的纯文本
+            let 文字 = await response.text();
+            console.log(文字);
+
+            let htmlString = marked.parse(文字);
+
+            console.log(htmlString);
+            // console.log(htmlString);
+            // 创建一个新的div元素来显示AI的文本
+            var aiDiv = document.createElement('div');
+            aiDiv.className = 'mdui-card-actions';
+            aiDiv.style.cssText = "  margin: 20px; /* 添加外边距 */ border-radius: 5px; /* 设置圆角 */ box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);"
+            // zws666666666666666666666
+            // 生成一个唯一的id
+            var uniqueId = 'text' + Math.random().toString(36).substr(2, 9);
+            // 创建p元素并设置其样式和文本内容
+
+            var p2 = document.createElement('div');
+            p2.style.cssText = "margin-left: 20px;text-align: left;word-wrap: break-word; overflow-wrap: break-word;";
+            // p2.className="typewriter"
+
+
+            //
+            //
+            // p2.innerHTML = htmlString
+            //
+            //
+            //
+            //
+            // // p2.innerHTML = htmlString
+            //
+            // submitButton.disabled = false;
+            //
+            // sourceDiv.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            var niu = " "
+            var i = 0;
+            var intervalId = setInterval(function () {
+                if (i < htmlString.length) {
+                    var isNearBottom = sourceDiv.scrollHeight - sourceDiv.scrollTop <= sourceDiv.clientHeight * 1.1;
+
+                    // 如果i为1的倍数且滚动条在底部10%的区域，就滚动到底部
+                    if (i === 1 && isNearBottom) {
+                        sourceDiv.scrollTop = sourceDiv.scrollHeight;
+                    }
+                    if (i === 0 && isNearBottom) {
+                        sourceDiv.scrollTop = sourceDiv.scrollHeight;
+                    }
+
+
+                    niu += htmlString[i];
+                    // console.log(htmlString[i]);
+                    // console.log(p2);
+                    p2.innerHTML = niu
+                    i++;
+                    // 检查滚动条是否在底部10%的区域
+
+
+                    // 如果i为10的倍数且滚动条在底部10%的区域，就滚动到底部
+                    if (i % 10 === 0 && isNearBottom) {
+                        sourceDiv.scrollTop = sourceDiv.scrollHeight;
+                    }
+
+                    var delay = Math.random() * 0.021 + 0.009;
+                    if (delay > 0.01) {
+                        delay -= 0.01;
+                    }
+                    clearInterval(intervalId);
+                    intervalId = setInterval(arguments.callee, delay * 1000);
+
+                } else {
+                    clearInterval(intervalId);
+                    // 在所有文字都显示完毕后重新启用提交按钮
+                    submitButton.disabled = false;
+
+
+                }
+            }, 10);
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        aiDiv.innerHTML = `
+            <img class="mdui-card-header-avatar no-stretch" src="/static/20190615121719_eftwu.jpg"/>
+            <div class="mdui-card-header-title">${selectedAIName}</div>
+            <div class="mdui-card-header-subtitle">${dateTimeStr}</div>
+
+        `;
+
+        aiDiv.appendChild(p2);
+        // <p id="${uniqueId}" style="margin-left: 20px;text-align: left;word-wrap: break-word; overflow-wrap: break-word;"></p>
+        // 创建一个分隔线
+        var divider = document.createElement('div');
+        divider.className = 'mdui-divider-dark';
+
+        // 将新的div和分隔线添加到div中
+
+
+        // targetDiv.appendChild(divider);
+        targetDiv.appendChild(aiDiv);
+
+        // 每0.03秒到0.009秒（80%的概率在0.01秒到0.009秒之间）添加一个字到p元素中
+
+    }
+
+
+
+
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>登录界面</title>
+    <!-- MDUI CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+
+  <style>
+    .rounded-element {
+      border-radius: 90px; /* 设置圆角半径，可以根据需要调整值 */
+    }
+   .mdui-row > [class*="mdui-col-"] {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #E8EAF6;
+  border: 1px solid #C5CAE9;
+  margin-bottom: 8px;
+}
+
+  </style>
+</head>
+
+<body>
+<body>
+  <div class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-grey-200">
+       <a href="#"> <img src="../static/logo.png" width="120px" style="position:absolute; left:3px; top:14px;color:sienna;margin-left:0px; float:right"  width="50px"></a>
+
+      <a href="#" class="mdui-typo-headline" style="position:absolute; left:55px; top:1px;margin-left:0px; float:right" >LINGO</a>
+
+
+
+    </div>
+  </div>
+
+{% load static %}
+
+
+
+<div class="mdui-color-grey-700"   style=" margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;background-image: url('../static/u=1551933435,847125014&fm=253&fmt=auto&app=120&f=JPEG.jpg');
+background-size: cover; /* 使背景图片填充整个容器 */
+      background-repeat: no-repeat; /* 防止背景图片重复 */">
+
+
+        <div class="mdui-row">
+
+
+
+
+
+
+          <div class="mdui-col-xs-5  mdui-color-grey-200 mdui-shadow-5 mdui-hoverable" style="float: left;position:absolute;left: 36%;top:30%;border-radius: 10px;height:260px;width: 500px">
+            <form action="" method="post">
+
+
+              <div><h1  style="font-weight:400;text-align: center;">输入你的验证码</h1> </div>
+<span class="mdui-text-color-red-a700" style="position:absolute;top:90px;left: 187px">{{ANDSS}}</span>
+<div class="mdui-textfield mdui-textfield-floating-label" style="position: absolute;left: 20px;top: 80px;width:90% ">
+
+                          <label class="mdui-textfield-label" >验证码</label>
+                          <input class="mdui-textfield-input" name="验证码" type="text" required/>
+                          <div class="mdui-textfield-error">验证码不能为空</div>
+                        </div>
+
+
+              <br>
+
+
+              <button class="mdui-btn mdui-btn-raised mdui-color-grey-400 mdui-hoverable " style="border-radius: 10px;position: absolute;top: 180px;width: 95%;left: 2.3%">
+                  <div><h2 style="font-weight:300;text-align: center;position: absolute;top:-16px;left: 215px"> 确定 </h2> </div></button>
+                {% csrf_token %}
+            </form>
+              <div>
+                  <span style="position:absolute;top:230px;left: 20px">返回登录界面<a href="/登录">登录</a></span>
+
+
+              </div>
+
+
+
+          </div>
+        </div>
+
+</div>
+
+
+</body>
+<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+</html>

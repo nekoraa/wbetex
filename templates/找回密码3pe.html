@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>修改密码</title>
+    <!-- MDUI CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+
+
+
+  </style>
+</head>
+
+<body>
+
+
+
+<div class="mdui-container-fluid">
+<div class="mdui-row">
+
+ <div class="mdui-toolbar mdui-color-grey-200 mdui-shadow-5">
+       <a href="#"> <img src="../static/logo.png" width="120px" style="position:absolute; left:3px; top:14px;color:sienna;margin-left:0px; float:right"  width="50px"></a>
+
+      <a href="#" class="mdui-typo-headline" style="position:absolute; left:55px; top:1px;margin-left:0px; float:right" >LINGO</a>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="mdui-container-fluid">
+<div class="mdui-row">
+
+
+
+
+
+
+
+
+
+
+    <div class="mdui-row">
+    <div class="mdui-col-xs-1"></div>
+    <div class="mdui-col-xs-10 mdui-shadow-5 mdui-color-grey-200 "    style="border-radius: 10px;margin-top: 20%;">
+
+
+
+
+
+
+
+
+
+
+
+
+          <div class="mdui-row">
+              <div class="mdui-col-xs-12 mdui-col-offset-xs-0" style="margin-top: 10px;font-size: 4vw; ; display: flex; justify-content: center; align-items: center;"  >
+
+
+                  <h2 style="font-weight:600;  display: inline-block;
+
+                    ">修改你的密码</h2>
+
+
+
+              </div>
+
+          </div>
+
+            <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-offset-xs-2" style="font-size: 2vw; border: 0px solid #000; display: flex; justify-content: center; align-items: center;"  >
+
+
+                      <h2 class="mdui-text-color-red-a700"  style="font-weight:600;  display: inline-block;border: 0px solid #000
+
+                        ">{{ANDSS}}</h2>
+
+
+
+                  </div>
+
+              </div>
+
+<form action="" method="post">
+        <div class="mdui-row">
+              <div class="mdui-col-xs-12 mdui-col-offset-xs-0 " style=";
+                     /* 2像素宽的黑色边框 */
+                     /* 可选的填充，增加边框与内容之间的间距 */"  >
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                      <label class="mdui-textfield-label">密码</label>
+                      <input class="mdui-textfield-input"name="密码" type="text" pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$" required/>
+                      <div class="mdui-textfield-error">密码必须由至少6个大写加小写字母与数字组成</div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+              </div>
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="mdui-row">
+              <div class="mdui-col-xs-12 mdui-col-offset-xs-0 " style="margin-top: 3%;margin-bottom:10%;">
+
+
+
+              <button   class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple mdui-shadow-2"style="border-radius: 10px;">下一步</button>
+
+
+
+
+
+
+              </div>
+
+        </div>
+
+</form>
+
+
+
+
+
+
+
+<div class="mdui-row">
+              <div class="mdui-col-xs-12 mdui-col-offset-xs-0 " style="margin-top: 20px;margin-bottom:5%;">
+
+
+
+              <div class="mdui-col-xs-12 mdui-col-offset-xs-0" style="font-size: 3vw; border: 0px solid #000; display: flex; justify-content: space-between; align-items: center;">
+
+
+
+                <div style="text-align: left;"> 已经有了账号？<a href="/登录pe">登录</a></div>
+
+
+
+              </div>
+
+
+
+
+
+
+              </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="mdui-col-xs-2"></div>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js">let canClick = true;
+
+    function disableButtonFor15Seconds() {
+      if (canClick) {
+        canClick = false;
+        setTimeout(() => {
+          canClick = true;
+        }, 15000); // 15秒
+      }
+    }
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>可展开文本框示例</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
+
+    #expandableTextarea {
+      width: 100%;
+      height: 50px;
+      max-height: 100px;
+      resize: none;
+      overflow-y: auto;
+      word-wrap: break-word;
+      transition: height 0.3s; /* 添加过渡效果 */
+    }
+
+    #expandButton {
+      display: block;
+      margin: 10px 0;
+      padding: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button id="expandButton" onclick="toggleTextarea()">展开/收起文本框</button>
+  <textarea id="expandableTextarea" placeholder="在这里输入内容..."></textarea>
+
+  <!-- 其他页面内容 -->
+
+  <script>
+    var isExpanded = false;
+
+    function toggleTextarea() {
+      var textarea = document.getElementById('expandableTextarea');
+      isExpanded = !isExpanded;
+
+      if (isExpanded) {
+        textarea.style.height = '500px'; // 展开至整个HTML高度
+      } else {
+        textarea.style.height = '50px'; // 回到原始高度
+      }
+    }
+  </script>
+</body>
+</html>
+

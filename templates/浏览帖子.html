@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html xmlns:left="http://www.w3.org/1999/xhtml" xmlns:top="http://www.w3.org/1999/xhtml">
+<head>
+  <title>帖子</title>
+    <!-- MDUI CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+
+
+
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+
+
+        <style>
+        #imageContainer {
+            width: 100%;
+            height: 120px;
+            overflow-x: auto; /* 水平滚动条 */
+            white-space: nowrap; /* 防止图片换行 */
+        }
+
+        .imageItem {
+            display: inline-block;
+            height: 120px; /* 图片容器高度 */
+            margin-right: 10px; /* 可选的图片之间的间距 */
+        }
+
+        .imageItem img {
+            max-height: 100%; /* 图片最大高度 */
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style>
+
+.no-stretch {
+    object-fit: cover; /* 防止图片拉伸并保持其原始比例 */
+    object-position: top;
+    max-width: 100%; /* 最大宽度为容器宽度 */
+    max-height: 100%; /* 最大高度为容器高度 */
+}
+
+
+
+
+
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5); /* 白色半透明背景 */
+  backdrop-filter: blur(0px); /* 添加模糊效果，根据需要调整模糊半径 */
+  z-index: -1; /* 置于底层 */
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/static/背景2.jpg'); /* 替换为背景图片路径 */
+  background-size: cover; /* 使背景图片充满整个 div */
+  filter: blur(4px); /* 添加模糊效果，根据需要调整模糊半径 */
+  content: "";
+
+  z-index: -1; /* 置于底层 */
+}
+
+.overlay4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5); /* 白色半透明背景 */
+  backdrop-filter: blur(0px); /* 添加模糊效果，根据需要调整模糊半径 */
+  z-index: -1; /* 置于底层 */
+}
+
+.background-image4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/static/背景.jpg'); /* 替换为背景图片路径 */
+  background-size: cover; /* 使背景图片充满整个 div */
+  filter: blur(4px); /* 添加模糊效果，根据需要调整模糊半径 */
+  content: "";
+
+  z-index: -1; /* 置于底层 */
+}
+
+
+.overlay2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5); /* 白色半透明背景 */
+  backdrop-filter: blur(0px); /* 添加模糊效果，根据需要调整模糊半径 */
+  z-index: -1; /* 置于底层 */
+}
+
+.background-image2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../static/背景.jpg'); /* 替换为背景图片路径 */
+  background-size: cover; /* 使背景图片充满整个 div */
+  filter: blur(8px); /* 添加模糊效果，根据需要调整模糊半径 */
+  content: "";
+
+  z-index: -1; /* 置于底层 */
+}
+
+
+
+.overlay3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5); /* 白色半透明背景 */
+  backdrop-filter: blur(0px); /* 添加模糊效果，根据需要调整模糊半径 */
+  z-index: -1; /* 置于底层 */
+}
+
+.background-image3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('{{ current_user_info.背景图片.url }}'); /* 替换为背景图片路径 */
+  background-size: cover; /* 使背景图片充满整个 div */
+  filter: blur(12px); /* 添加模糊效果，根据需要调整模糊半径 */
+  content: "";
+
+  z-index: -1; /* 置于底层 */
+}
+
+
+
+
+
+
+
+</style>
+
+
+  <style>
+    .avatar-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .avatar-button img {
+
+    }
+
+    .avatar-button:hover img {
+      transform: scale(1.1); /* 悬停时放大图片 */
+    }
+  </style>
+    <style>
+  .round-button {
+    width: 100px; /* 设置按钮的宽度 */
+    height: 100px; /* 设置按钮的高度，使其成为一个正圆 */
+    background-image: url('{{ current_user_info.头像.url }}');
+    background-size: cover;
+    border-radius: 50%; /* 将按钮的边角半径设置为50%，使其成为一个圆形 */
+    border: none; /* 去除按钮边框 */
+    cursor: pointer; /* 鼠标移上去时显示手型光标 */
+  }
+</style>
+  <style>
+    .rounded-element {
+      border-radius: 90px; /* 设置圆角半径，可以根据需要调整值 */
+    }
+    .responsive-div {
+      display: block;
+    }
+
+    /* 在页面宽度小于600像素时隐藏 */
+    @media (max-width: 600px) {
+      .responsive-div {
+        display: none;
+      }
+    }
+    /* 默认样式，隐藏 */
+    .responsive2-div {
+      display: none;
+    }
+
+    /* 在页面宽度小于400px时显示 */
+    @media (max-width: 600px) {
+      .responsive2-div {
+        display: block;
+      }
+    }
+  </style>
+
+   <style>
+    /* 覆盖默认的MDUI菜单样式 */
+    .mdui-menu {
+      width: 200px; /* 调整菜单的宽度 */
+      padding: 0; /* 去除内边距 */
+      border-radius: 1px; /* 设置圆角 */
+    }
+    .mdui-menu-item {
+      height: 30px; /* 调整菜单项的高度 */
+      padding: 0px 0px; /* 调整内边距 */
+    }
+    .mdui-menu-item a {
+      text-align: left !important; /* 强制文本左对齐 */
+    }
+    .mdui-menu-item i {
+      display: none; /* 隐藏图标 */
+    }
+    /* 子菜单设置圆角 */
+    .mdui-menu-cascade {
+      border-radius: 5px; /* 设置子菜单的圆角 */
+    }
+  </style>
+
+  <style>
+    /* 样式用于垂直居中元素 */
+    .vertical-center {
+      display: flex;
+      align-items: center;
+    }
+
+    /* 样式用于使头像图片为圆形 */
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%; /* 50%的圆角使其变成圆形 */
+    }
+      .image-container {
+    height: 400px; /* 设置容器的高度为300px */
+    overflow: hidden; /* 隐藏容器外部的内容 */
+
+    width: 100%;
+  }
+
+  .image-container img {
+   width: 100%; /* 图片宽度填充容器 */
+    height: 100%; /* 图片高度填充容器 */
+    object-fit: cover; /* 保持纵横比并裁剪以填充容器 */
+
+
+
+  }
+  </style>
+
+
+
+
+</head>
+<body>
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+<button class="mdui-btn mdui-btn-icon mdui-btn-raised mdui-color-grey-200 mdui-shadow-5" style="position:fixed;bottom: 14px;left:20px;border: 0px solid #000 ;height: 50px;width: 50px;z-index: 9999;" onclick="goBack()"><i class="mdui-icon material-icons">navigate_before</i></button>
+
+
+
+<div style="z-index: -99; position:fixed;" class="background-image2"><div class="overlay2"></div></div>
+
+
+
+<div style="position:fixed;bottom: 5px;left:80px;border: 0px solid #000 ;height: 50px;width: 50px;z-index: 9999;">
+
+    <button class="mdui-btn mdui-btn-icon mdui-btn-raised mdui-color-grey-200 mdui-shadow-5" mdui-dialog="{target: '#发帖'}" ><i class="mdui-icon material-icons">add</i></button>
+
+                                <div class="mdui-dialog" id="发帖"  style="overflow-y: auto;border-radius: 5px;">
+                                    <div class="background-image2"><div class="overlay2"></div></div>
+                                            <div class="mdui-container ">
+
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-xs-12 mdui-color-grey-200 mdui-col-offset-xs-0 mdui-shadow-0" style="border-radius: 5px;margin-top: 10px; /* 设置上边距为20像素 */margin-bottom: 10px;">
+
+                                                        <form action="" method="post" enctype="multipart/form-data">
+
+                                                                            <h3 style="font-weight: 300;">请输入标题</h3>
+                                                                        <textarea class="mdui-color-grey-100 mdui-shadow-5" id="long-text" name="标题" rows="5" cols="40" style="border-radius: 5px;;width: 100%;height: 20px;overflow-y: scroll;resize: none;border: 1px;outline: none;" required></textarea>
+                                                                            <h3 style="font-weight: 300;">请输入内容</h3>
+                                                                        <textarea class="mdui-color-grey-100 mdui-shadow-5" id="long-text" name="正文" rows="5" cols="40" style="border-radius: 5px;;width: 100%;height: 200px;overflow-y: scroll;resize: none;border: 1px;outline: none;" required></textarea>
+                                                                            <h3 style="font-weight: 300;">放入链接</h3>
+                                                                        <textarea class="mdui-color-grey-100 mdui-shadow-5" id="long-text" name="链接" rows="5" cols="40" style="border-radius: 5px;;width: 100%;height: 20px;overflow-y: scroll;resize: none;border: 1px;outline: none;" required></textarea>
+                                                                        <div>
+
+                                                                          <label class="mdui-radio">
+                                                                            <input type="radio" name="帖子类型" value="游戏" checked/>
+                                                                            <i class="mdui-radio-icon"></i>
+                                                                            游戏
+                                                                          </label>
+
+                                                                          <label class="mdui-radio">
+                                                                            <input type="radio" name="帖子类型" />
+                                                                            <i class="mdui-radio-icon"></i>
+                                                                            暂无
+                                                                          </label>
+
+                                                                          <label class="mdui-radio">
+                                                                            <input type="radio" name="帖子类型" />
+                                                                            <i class="mdui-radio-icon"></i>
+                                                                            暂无
+                                                                          </label>
+
+
+                                                                        </div>
+                                                                        <div class="mdui-row mdui-color-grey-100" style="border-radius: 5px;margin-top: 10px; /* 设置上边距为20像素 */margin-bottom: 10px;">
+                                                                            <div class="mdui-col-xs-12 mdui-col-offset-xs-0 mdui-shadow-5" style="border-radius: 5px;">
+                                                                                <div class="mdui-shadow-5" id="imageContainer" style="border-radius: 5px;margin-top: 10px;">
+                                                                                    <!-- 这里将显示上传的图片 -->
+                                                                                </div>
+                                                                                <input type="file" id="uploadInput" accept="image/*" name="游戏图片" onchange="previewImages()"  multiple style="display: none;"  required>
+
+                                                                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple mdui-shadow-5" type="button" style=" border-radius: 5px;margin-top: 10px;margin-bottom: 10px;" onclick="document.getElementById('uploadInput').click()">选择图片(第一张为封面)</button>
+                                                                            </div>
+                                                                        </div>
+
+
+
+
+                                                                        <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple mdui-shadow-5 mdui-color-grey-100" style="border-radius: 5px;margin-bottom: 20px;margin-top: 20px">提交帖子</button>
+
+
+
+                                                        </form>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+
+
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-xs-12 mdui-col-offset-xs-0 mdui-shadow-5" style="border-radius: 5px;">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+
+</div>
+
+<div class="responsive-div" style="position: fixed;;width: 100%;z-index: 999;background: rgba(255, 255, 255, 0.8);">
+
+
+
+        <div class="mdui-toolbar mdui-color-theme  mdui-shadow-5 " >
+
+
+          <!-- 左侧的 logo 图片 -->
+
+            <img src="../static/logo666.png" width="100px" alt="Logo" class="mdui-toolbar-title" >  <h3>浏览帖子</h3>
+
+          <!-- 中间的按钮组 -->
+          <div class="mdui-toolbar-spacer"></div>
+          <div class="vertical-center">
+
+
+
+          </div>
+          <div class="mdui-toolbar-spacer"></div>
+
+          <!-- 右侧的用户头像和搜索按钮 -->
+          <div class="vertical-center">
+
+            <button class="mdui-btn mdui-btn-icon" ><i class="mdui-icon material-icons" >search</i></button>
+            <button class="round-button user-avatar" mdui-dialog="{target: '#example-4'}"style=""></button>
+
+
+          </div>
+        </div>
+    </div>
+
+
+<div class="responsive2-div"style="position: fixed;;width: 100%;z-index: 999 ;background: rgba(255, 255, 255, 0.8);">
+        <div class="mdui-toolbar mdui-color-theme  mdui-shadow-5  " >
+
+          <!-- 左侧的 logo 图片 -->
+          <img src="../static/logo666.png" width="100px" alt="Logo" class="mdui-toolbar-title">
+
+          <!-- 中间的按钮组 -->
+          <div class="mdui-toolbar-spacer"></div>
+
+
+          <div class="mdui-toolbar-spacer"></div>
+
+          <!-- 右侧的用户头像和搜索按钮 -->
+          <div class="vertical-center">
+
+            <button class="mdui-btn mdui-btn-icon" ><i class="mdui-icon material-icons">search</i></button>
+
+            <button class="round-button user-avatar" mdui-dialog="{target: '#example-4'}"style=""></button>
+
+          </div>
+        </div>
+    </div>
+
+
+<div class="mdui-container-fluid "style="width: 100%;margin: 0;padding: 0;" >
+
+    <div class="mdui-col-xs-10  mdui-col-offset-xs-1  " style="border: 0px solid #000 ; margin-top: 0px; margin-bottom: 20px;">
+
+        <div class="mdui-col-xs-10  mdui-col-offset-xs-1   responsive2-div" style="border: 0px solid #000 ; margin-top: 10px;">
+
+
+
+
+
+
+    </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="mdui-col-xs-12  mdui-col-offset-xs-0  " style="border: 0px solid #000 ; ;margin-top: 0px; margin-bottom: 0px; ">
+
+            <div class="mdui-col-xs-12  mdui-col-offset-xs-0  " style="border: 0px solid #000 ;height: 35px ;margin-top: 5px; border-radius: 10px;margin-bottom: 5px;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+
+
+
+            </div>
+
+
+
+                    <div class="mdui-row-xs-2 mdui-row-sm-3 mdui-row-md-4 mdui-row-lg-5 mdui-row-xl-5 mdui-grid-list">
+
+
+                                {% for 游戏帖子 in 游戏帖子列表.object_list %}
+                      <div class="mdui-col" >
+                        <div class="mdui-grid-tile" style="border-radius: 5px;">
+                            <div class="mdui-spinner mdui-spinner-colorful " style="  position: absolute;top: 50%;left: 50%;"></div>
+                            <a href="../帖子/?id={{ 游戏帖子.id }}" ><img class="no-stretch lazy-load" data-src="{{ 游戏帖子.封面.url }}" height="180px" id="image-{{ 游戏帖子.封面.url }}" /></a>
+                          <div class="mdui-grid-tile-actions mdui-grid-tile-actions-gradient">
+                            <div class="mdui-grid-tile-text">
+                              <div class="mdui-grid-tile-title">{{ 游戏帖子.标题 }}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                                {% endfor %}
+
+                      </div>
+                    </div>
+
+
+
+
+
+
+    </div>
+
+                        <div class="pagination" style="margin: 0 auto; display: table; margin-top: 30px;">
+                            <span class="step-links">
+                                {% if 游戏帖子列表.has_previous %}
+                                    <a class="mdui-btn " href="?page=1">第一页</a>
+                                    <a class="mdui-btn " href="?page={{ 游戏帖子列表.previous_page_number }}">上一页</a>
+                                {% else %}
+                                    <a class="mdui-btn " disabled>第一页</a>
+                                    <a class="mdui-btn " disabled>上一页</a>
+                                {% endif %}
+
+                                <select class="mdui-select" mdui-select="{position: 'top'}" onchange="jumpToPage(this)" >
+                                    {% for page_num in 游戏帖子列表.paginator.page_range %}
+                                        <option value="{{ page_num }}"  {% if page_num == 游戏帖子列表.number %}selected{% endif %}>
+                                             {{ page_num }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+
+                                {% if 游戏帖子列表.has_next %}
+                                    <a class="mdui-btn " href="?page={{ 游戏帖子列表.next_page_number }}">下一页</a>
+                                    <a class="mdui-btn " href="?page={{ 游戏帖子列表.paginator.num_pages }}">最后一页</a>
+                                {% else %}
+                                    <a class="mdui-btn " disabled>下一页</a>
+                                    <a class="mdui-btn " disabled>最后一页</a>
+                                {% endif %}
+                            </span>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="mdui-dialog" id="example-4" style="border-radius: 10px;overflow-y: auto;">
+      <div class="mdui-tab mdui-tab-full-width mdui-color-grey-200" id="example4-tab">
+        <a href="#example4-tab1" class="mdui-ripple">个人信息</a>
+
+      </div>
+      <div id="example4-tab1" class="mdui-p-a-2" style="height: 540px;">
+        <div class="background-image3"><div class="overlay3"></div></div>
+                <div class="mdui-card" style="width: 100% ;border-radius: 10px;  ">
+                  <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-ripple mdui-color-purple-50"   style="border-radius: 10px;"><a href="../设置个人中心">个人主页</a></button>
+
+                  </div>
+
+                  <div class="mdui-card-media image-container" style="height: 300px">
+                    <img src="{{ current_user_info.背景图片.url }}" height="30%"/>
+                    <div class="mdui-card-media-covered">
+                      <div class="mdui-card-primary">
+
+                        <div class="mdui-card-primary-subtitle">{{ current_user_info.个性签名 }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  </div>
+                  <div class="mdui-card-header">
+                    <img class="mdui-card-header-avatar no-stretch" src="{{ current_user_info.头像.url }}"/>
+
+
+                    <div class="mdui-card-header-title">{{ 用户.username }}</div>
+                    <div class="mdui-card-header-subtitle">{{ 用户.email }}</div>
+                  </div>
+          <form  method="post">
+                          <div class="mdui-col " style="margin-top: 25px;">
+                            <button class="mdui-btn mdui-btn-block mdui-shadow-2 mdui-color-theme-accent mdui-ripple"   onclick="submitForm2()" style="border-radius: 10px;">退出登录</button>
+
+                          </div>
+              <input type="hidden" name="退出" id="custom_text_field" value="">
+            </form>
+      </div>
+
+</div>
+
+
+
+
+ <!-- 看板娘 -->
+
+  <script type="text/javascript" charset="utf-8"  src="https://files.cnblogs.com/files/liuzhou1/L2Dwidget.0.min.js"></script>
+  <script type="text/javascript" charset="utf-8"  src="https://files.cnblogs.com/files/liuzhou1/L2Dwidget.min.js"></script>
+  <script type="text/javascript">
+    L2Dwidget.init({
+        "model": {
+            jsonPath: "https://unpkg.com/live2d-widget-model-z16/assets/z16.model.json",//这里改模型，前面后面都要改
+            "scale": 1
+        },
+        "display": {
+            "position": "right",//设置看板娘的上下左右位置
+            "width": 200,
+            "height": 270,
+            "hOffset": 0,
+            "vOffset": 0
+        },
+        "mobile": {
+            "show": true,
+            "scale": 0.001,
+        },
+        "react": {
+            "opacityDefault": 1,//设置透明度
+            "opacityOnHover": 0
+        }
+    });
+    window.onload = function () {
+        $("#live2dcanvas").attr("style", "position: fixed; opacity: 0.7; left: 0px; bottom: 1px; z-index: 1; pointer-events: none;")
+    }
+  </script>
+
+
+</body>
+</html>
+
+
+
+    <!--
+        可替换的模型名称
+        2D模型全名称：
+            live2d-widget-model-haruto      小娃娃（男）
+            live2d-widget-model-koharu      小娃娃（女）
+            live2d-widget-model-ni-j        小娃娃（不知道怎么描述，带这个耳机）
+            live2d-widget-model-nico        小娃娃（狐狸？？）
+            live2d-widget-model-nipsilon    小娃娃（粉长头发小娃娃）
+            live2d-widget-model-nito        小娃娃（粉短头发小娃娃）
+            live2d-widget-model-unitychan   小娃娃（黄色长头发小娃娃）
+            live2d-widget-model-chitose     一个帅哥
+            live2d-widget-model-shizuku     坐在课桌上的小美女
+            live2d-widget-model-hibiki      一个小妹妹
+            live2d-widget-model-izumi       一个妹子
+            live2d-widget-model-tsumiki     绿萝？？？？
+            live2d-widget-model-miku        初音
+            live2d-widget-model-z16         这个妹子好看
+            live2d-widget-model-hijiki      黑猫
+            live2d-widget-model-tororo      白猫
+            live2d-widget-model-wanko       趴在碗里的狗
+    -->
+
+
+
+<div class="mdui-dialog" id="messageDialog" style="display: none;">
+    <div class="mdui-dialog-title">修改成功</div>
+    <div class="mdui-dialog-content">您的操作已成功完成。</div>
+    <div class="mdui-dialog-actions">
+        <button class="mdui-btn mdui-ripple" id="closeDialog">返回</button>
+    </div>
+</div>
+
+
+
+
+
+{% if open_dialog %}
+<div class="mdui-dialog" style="border-radius: 10px;" id="your-dialog-element">
+  <div class="mdui-dialog-title">错误</div>
+  <div class="mdui-dialog-content">已经有人叫该用户或者邮箱已被注册</div>
+  <div class="mdui-dialog-actions">
+
+
+  </div>
+</div>
+
+<script>
+  // 在DOM加载完毕后触发
+  document.addEventListener("DOMContentLoaded", function() {
+    var dialog = new mdui.Dialog('#your-dialog-element');
+    dialog.open();
+  });
+</script>
+{% endif %}
+
+{% if open_dialog2 %}
+<div class="mdui-dialog" style="border-radius: 10px;" id="your-dialog-element">
+  <div class="mdui-dialog-title">成功</div>
+  <div class="mdui-dialog-content">你已经成功修改了资料</div>
+  <div class="mdui-dialog-actions">
+
+
+  </div>
+</div>
+
+<script>
+  // 在DOM加载完毕后触发
+  document.addEventListener("DOMContentLoaded", function() {
+    var dialog = new mdui.Dialog('#your-dialog-element');
+    dialog.open();
+  });
+</script>
+{% endif %}
+
+
+
+{% if open_dialog3 %}
+<div class="mdui-dialog" style="border-radius: 10px;" id="your-dialog-element">
+  <div class="mdui-dialog-title">错误</div>
+  <div class="mdui-dialog-content">没有选择文件或其它未知原因</div>
+  <div class="mdui-dialog-actions">
+
+
+  </div>
+</div>
+
+<script>
+  // 在DOM加载完毕后触发
+  document.addEventListener("DOMContentLoaded", function() {
+    var dialog = new mdui.Dialog('#your-dialog-element');
+    dialog.open();
+  });
+</script>
+{% endif %}
+
+{% if open_dialog4 %}
+<div class="mdui-dialog" style="border-radius: 10px;" id="your-dialog-element">
+  <div class="mdui-dialog-title">成功</div>
+  <div class="mdui-dialog-content">发帖成功！！！</div>
+  <div class="mdui-dialog-actions">
+
+
+  </div>
+</div>
+
+<script>
+  // 在DOM加载完毕后触发
+  document.addEventListener("DOMContentLoaded", function() {
+    var dialog = new mdui.Dialog('#your-dialog-element');
+    dialog.open();
+  });
+</script>
+{% endif %}
+
+</body>
+
+<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+<script>
+  var tab = new mdui.Tab('#example4-tab');
+  document.getElementById('example-4').addEventListener('open.mdui.dialog', function () {
+    tab.handleUpdate();
+  });
+</script>
+  <script>
+    const uploadInput = document.getElementById("upload-input");
+
+    function chooseFile() {
+      uploadInput.click(); // 点击按钮触发文件上传输入
+    }
+
+    uploadInput.addEventListener("change", function () {
+      const selectedFile = uploadInput.files[0];
+      if (selectedFile) {
+        // 在这里可以执行上传头像的操作
+        // 这里只是一个演示，你可以根据需要执行实际的上传操作
+        alert("已选择文件：" + selectedFile.name);
+      }
+    });
+  </script>
+<script>
+function submitForm2() {
+  var customText = "退出";  // 在这里设置你要提交的特定文本
+  document.getElementById("custom_text_field").value = customText;
+  document.querySelector('form').submit();
+}
+function submitForm() {
+  var customText = "改邮箱";  // 在这里设置你要提交的特定文本
+  document.getElementById("custom_text_field2").value = customText;
+  document.querySelector('form').submit();
+}
+</script>
+
+
+
+<script>
+    function previewImages() {
+        const container = document.getElementById('imageContainer');
+        container.innerHTML = ''; // 清空之前的图片
+
+        const input = document.getElementById('uploadInput');
+        if (input.files) {
+            for (let i = 0; i < input.files.length; i++) {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'imageItem';
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const image = document.createElement('img');
+                    image.src = e.target.result;
+                    imageItem.appendChild(image);
+                };
+
+                reader.readAsDataURL(input.files[i]);
+                container.appendChild(imageItem);
+            }
+        }
+    }
+</script>
+
+<script>
+  // 获取进度指示器元素
+  var progress = document.getElementById("progress");
+
+  // 监听页面加载开始事件
+  window.addEventListener("loadstart", function() {
+    // 显示进度指示器
+    progress.classList.remove("mdui-hidden");
+  });
+
+  // 监听页面加载完成事件
+  window.addEventListener("load", function() {
+    // 隐藏进度指示器
+    progress.classList.add("mdui-hidden");
+  });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  var lazyImages = document.querySelectorAll(".lazy-load");
+
+  function lazyLoad() {
+    lazyImages.forEach(function (img) {
+      if (isInViewport(img) && !img.src) {
+        img.src = img.getAttribute("data-src");
+      }
+    });
+  }
+
+  function isInViewport(element) {
+    var rect = element.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
+
+  // 初始加载
+  lazyLoad();
+
+  // 滚动事件监听器，以在滚动时加载图片
+  window.addEventListener("scroll", lazyLoad);
+});
+</script>
+<script>
+    // 获取图片元素
+    {% for 游戏帖子 in 游戏帖子列表.object_list %}
+    var image = document.getElementById("image-{{ 游戏帖子.封面.url }}");
+
+    // 监听图片加载完成事件
+    image.addEventListener("load", function () {
+        // 图片加载完成后移除spinner
+        var spinner = document.querySelector(".mdui-spinner");
+        spinner.parentNode.removeChild(spinner);
+    });
+    {% endfor %}
+// 获取所有表单元素
+var forms = document.querySelectorAll('form');
+
+// 遍历每个表单并设置autocomplete属性
+for (var i = 0; i < forms.length; i++) {
+    forms[i].setAttribute('autocomplete', 'off');
+}
+    function jumpToPage(selectElement) {
+    const selectedPage = selectElement.value;
+    window.location.href = `?page=${selectedPage}`;
+}
+</script>
+
+
+</html>

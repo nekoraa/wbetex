@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #imageContainer {
+            width: 100%;
+            height: 120px;
+            overflow-x: auto; /* 水平滚动条 */
+            white-space: nowrap; /* 防止图片换行 */
+        }
+
+        .imageItem {
+            display: inline-block;
+            height: 120px; /* 图片容器高度 */
+            margin-right: 10px; /* 可选的图片之间的间距 */
+        }
+
+        .imageItem img {
+            max-height: 100%; /* 图片最大高度 */
+        }
+    </style>
+</head>
+<body>
+    <div id="imageContainer">
+        <!-- 这里将显示上传的图片 -->
+    </div>
+    <input type="file" id="uploadInput" accept="image/*" onchange="previewImages()" multiple>
+</body>
+
+<script>
+    function previewImages() {
+        const container = document.getElementById('imageContainer');
+
+        const input = document.getElementById('uploadInput');
+        if (input.files) {
+            for (let i = 0; i < input.files.length; i++) {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'imageItem';
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const image = document.createElement('img');
+                    image.src = e.target.result;
+                    imageItem.appendChild(image);
+                };
+
+                reader.readAsDataURL(input.files[i]);
+                container.appendChild(imageItem);
+            }
+        }
+    }
+</script>
+</html>
+
+
+
+
